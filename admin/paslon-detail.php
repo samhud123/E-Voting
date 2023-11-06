@@ -14,18 +14,18 @@ $id_paslon = $_GET['p'];
 $detailPaslon = mysqli_query($con, "SELECT * FROM calon WHERE id_paslon = $id_paslon");
 $data = mysqli_fetch_array($detailPaslon);
 
-if (isset($_POST['btnSimpan'])) {
-    if (tambahPaslon($_POST) > 0) {
+if (isset($_POST['update'])) {
+    if (editPaslon($_POST) > 0) {
         echo "
             <script>
-                alert('data berhasil ditambahkan');
+                alert('data berhasil diubah');
                 document.location.href = 'index.php';
             </script>
         ";
     } else {
         echo "
             <script>
-                alert('data gagal ditambahkan');
+                alert('data gagal diubah');
                 document.location.href = 'index.php';
             </script>
         ";
@@ -61,6 +61,8 @@ if (isset($_POST['btnSimpan'])) {
         <div>
             <div class="card p-3">
                 <form action="" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id_paslon" value="<?= $data['id_paslon']; ?>">
+                    <input type="hidden" name="fotoLama" value="<?= $data['foto']; ?>">
                     <div class="mb-3">
                         <label for="nama" class="form-label">Nama Paslon</label>
                         <input type="text" class="form-control" name="nama" id="nama" required value="<?= $data['nama']; ?>">
@@ -83,10 +85,10 @@ if (isset($_POST['btnSimpan'])) {
                     </div>
                     <div class="mb-3">
                         <label for="fotoBaru" class="form-label">Ganti Foto</label><br>
-                        <input type="file" name="fotoBaru" class="form-control" required>
+                        <input type="file" name="foto" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-info" name="btnSimpan">Simpan</button>
+                        <button type="submit" class="btn btn-info" name="update">Simpan</button>
                         <a href="index.php" class="btn btn-danger">Batal</a>
                     </div>
                 </form>

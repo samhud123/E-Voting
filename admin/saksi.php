@@ -67,8 +67,8 @@ $title = 'Saksi';
                                             <td><?= $data['nama']; ?></td>
                                             <td><?= $data['password']; ?></td>
                                             <td>
-                                                <a href="" class="btn btn-sm btn-info" title="Edit"><i class="mdi mdi-pencil"></i></a>
-                                                <a href="" class="btn btn-sm btn-danger" title="Hapus"><i class="mdi mdi-delete"></i></a>
+                                                <a href="saksi-detail.php?p=<?= $data['id_saksi']; ?>" class="btn btn-sm btn-info" title="Edit"><i class="mdi mdi-pencil"></i></a>
+                                                <a href="delete-saksi.php?p=<?= $data['id_saksi']; ?>" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Apakah Anda yakin?');"><i class="mdi mdi-delete"></i></a>
                                             </td>
                                         </tr>
                                     <?php

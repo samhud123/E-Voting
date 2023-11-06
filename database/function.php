@@ -119,7 +119,7 @@ function tambahSaksi($data)
 
     // tambah saksi ke database
     $insertSaksi = mysqli_query($con, "INSERT INTO saksi VALUES ('', '$nama', '$password1')");
-    
+
     // insert vote
     $saksi = mysqli_query($con, "SELECT * FROM saksi WHERE id_saksi IN (SELECT MAX(id_saksi) FROM saksi);");
     $idSaksi = mysqli_fetch_assoc($saksi);
@@ -133,6 +133,88 @@ function tambahSaksi($data)
 
     // insert vote rusak
     $voteRusak = mysqli_query($con, "INSERT INTO voting_rusak VALUES ('', '$id_saksi', 0)");
+
+    return mysqli_affected_rows($con);
+}
+
+function editPaslon($data)
+{
+    global $con;
+
+    $id_paslon = $data['id_paslon'];
+    $nama = htmlspecialchars($data['nama']);
+    $no_urut = $data['no_urut'];
+    $visi = htmlspecialchars($data['visi']);
+    $misi = htmlspecialchars($data['misi']);
+    $fotoLama = htmlspecialchars($data['fotoLama']);
+
+    // cek apakah user pilih gambar baru atau tidak
+    if ($_FILES['foto']['error'] === 4) {
+        $fotoBaru = $fotoLama;
+    } else {
+        $fotoBaru = upload();
+    }
+
+    // query update data
+    $query = "UPDATE calon SET 
+                nama = '$nama',
+                no_urut = '$no_urut',
+                visi = '$visi',
+                misi = '$misi',
+                foto = '$fotoBaru'
+            WHERE id_paslon = $id_paslon
+            ";
+
+    mysqli_query($con, $query);
+    return mysqli_affected_rows($con);
+}
+
+// hapus paslon
+function hapusPaslon($id_paslon)
+{
+    global $con;
+
+    mysqli_query($con, "DELETE FROM voting WHERE id_paslon = $id_paslon");
+    mysqli_query($con, "DELETE FROM calon WHERE id_paslon = $id_paslon");
+    return mysqli_affected_rows($con);
+}
+
+// edit saksi
+function editSaksi($data)
+{
+    global $con;
+
+    $id_saksi = $data['id_saksi'];
+    // $nama = strtolower(stripslashes($data["nama"]));
+    $password1 = mysqli_real_escape_string($con, $data["password1"]);
+    $password2 = mysqli_real_escape_string($con, $data["password2"]);
+
+    // cek konfirmasi password
+    if ($password1 !== $password2) {
+        echo "
+            <script>
+                alert('Konfirmasi password tidak sesuai!');
+                window.location.href = 'saksi.php';
+            </script>
+        ";
+        die();
+    }
+
+    // update data
+    $queryUpdate = "UPDATE saksi SET password = '$password1' WHERE id_saksi = $id_saksi";
+
+    mysqli_query($con, $queryUpdate);
+    return mysqli_affected_rows($con);
+}
+
+// hapus saksi
+function hapusSaksi($id_saksi)
+{
+    global $con;
+
+    mysqli_query($con, "DELETE FROM voting WHERE id_saksi = $id_saksi");    
+    mysqli_query($con, "DELETE FROM voting_rusak WHERE id_saksi = $id_saksi");    
+    mysqli_query($con, "DELETE FROM saksi WHERE id_saksi = $id_saksi");   
 
     return mysqli_affected_rows($con);
 }

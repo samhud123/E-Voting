@@ -8,12 +8,34 @@ if (!isset($_SESSION['admin'])) {
 
 require_once '../database/function.php';
 
-$title = 'Dashboard';
+$title = 'Saksi';
+
+$id_saksi = $_GET['p'];
+
+$getSaksi = mysqli_query($con, "SELECT * FROM saksi WHERE id_saksi = $id_saksi");
+$row = mysqli_fetch_array($getSaksi);
+
+if (isset($_POST['update'])) {
+    if (editSaksi($_POST) > 0) {
+        echo "
+            <script>
+                alert('data berhasil diedit');
+                document.location.href = 'saksi.php';
+            </script>
+        ";
+    } else {
+        echo "
+            <script>
+                alert('data gagal diedit');
+                document.location.href = 'saksi.php';
+            </script>
+        ";
+    }
+}
 ?>
 
 <?php require_once 'template/header.php' ?>
 <?php require_once 'template/sidebar.php' ?>
-
 <!-- ============================================================== -->
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
@@ -27,10 +49,11 @@ $title = 'Dashboard';
         <!-- ============================================================== -->
         <div class="row page-titles">
             <div class="col-md-5 col-8 align-self-center">
-                <h3 class="text-themecolor">Dashboard</h3>
+                <h3 class="text-themecolor m-b-0 m-t-0">Edit Saksi</h3>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item"><a href="saksi.php">Saksi</a></li>
+                    <li class="breadcrumb-item active">Edit Saksi</li>
                 </ol>
             </div>
         </div>
@@ -40,57 +63,33 @@ $title = 'Dashboard';
         <!-- ============================================================== -->
         <!-- Start Page Content -->
         <!-- ============================================================== -->
-        <!-- Row -->
-        <!-- Row -->
-        <!-- Row -->
-        <div class="text-center mb-4">
-            <h2>Daftar Paslon</h2>
-        </div>
-
-        <div class="mb-4">
-            <a href="tambah-paslon.php" class="btn btn-info">Tambah Paslon (+)</a>
-        </div>
-
         <div class="row">
-            <!-- Column -->
-            <?php
-            $queryPaslon = mysqli_query($con, "SELECT * FROM calon");
-            while ($data = mysqli_fetch_array($queryPaslon)) {
-            ?>
-                <div class="col-lg-4 col-xlg-3 col-md-5">
-                    <!-- Column -->
-                    <div class="card">
-                        <img class="card-img-top" src="../assets/images/background/bendera.png" alt="Card image cap">
-                        <div class="card-block little-profile text-center">
-                            <div class="pro-img"><img src="../assets/images/paslon/<?= $data['foto']; ?>" alt="user" /></div>
-                            <h3 class="m-b-0">Paslon <?= $data['no_urut']; ?></h3>
-                            <p><?= $data['nama']; ?></p>
-                            <!-- <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded">Follow</a> -->
-                            <center>
-                                <div class="row text-center m-t-20">
-                                    <div class="text-center">
-                                        <h4>Visi : </h4>
-                                        <p class="px-3"><?= $data['visi']; ?></p>
-                                    </div>
-                                </div>
-                                <div class="row text-center m-t-20">
-                                    <div class="text-center">
-                                        <h4>Misi : </h4>
-                                        <p class="px-3"><?= $data['misi']; ?></p>
-                                    </div>
-                                </div>
-                            </center>
-                        </div>
-                        <center class="mb-4">
-                            <a href="paslon-detail.php?p=<?= $data['id_paslon']; ?>" class="btn btn-info w-25">Ubah</a>
-                            <a href="delete-paslon.php?p=<?= $data['id_paslon']; ?>" class="btn btn-danger w-25" onclick="return confirm('Apakah Anda yakin?');">Hapus</a>
-                        </center>
+            <!-- column -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-block">
+                        <form action="" method="post">
+                            <input type="hidden" name="id_saksi" value="<?= $id_saksi; ?>">
+                            <div class="mb-3">
+                                <label for="nama" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="nama" name="nama" required value="<?= $row['nama']; ?>" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password1" class="form-label">Password Baru</label>
+                                <input type="password" class="form-control" name="password1" id="password1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password2" class="form-label">Ulangi Password Baru</label>
+                                <input type="password" class="form-control" name="password2" id="password2" required>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-info" name="update">Simpan</button>
+                                <a href="saksi.php" class="btn btn-danger">Batal</a>
+                            </div>
+                        </form>
                     </div>
-                    <!-- Column -->
                 </div>
-            <?php
-            }
-            ?>
+            </div>
         </div>
         <!-- ============================================================== -->
         <!-- End PAge Content -->
