@@ -212,9 +212,40 @@ function hapusSaksi($id_saksi)
 {
     global $con;
 
-    mysqli_query($con, "DELETE FROM voting WHERE id_saksi = $id_saksi");    
-    mysqli_query($con, "DELETE FROM voting_rusak WHERE id_saksi = $id_saksi");    
-    mysqli_query($con, "DELETE FROM saksi WHERE id_saksi = $id_saksi");   
+    mysqli_query($con, "DELETE FROM voting WHERE id_saksi = $id_saksi");
+    mysqli_query($con, "DELETE FROM voting_rusak WHERE id_saksi = $id_saksi");
+    mysqli_query($con, "DELETE FROM saksi WHERE id_saksi = $id_saksi");
 
     return mysqli_affected_rows($con);
+}
+
+// update admin
+function updateAdmin($data)
+{
+    global $con;
+
+    $id_admin = $data['id_admin'];
+    $nama = strtolower(stripslashes($data["nama"]));
+    $passwordLama = mysqli_real_escape_string($con, $data["password_lama"]);
+    $passwordBaru = mysqli_real_escape_string($con, $data["password_baru"]);
+
+    $cek = mysqli_query($con, "SELECT * FROM admin WHERE id_admin = $id_admin");
+    $row = mysqli_fetch_array($cek);
+
+    if ($passwordLama == $row['password']) {
+        mysqli_query($con, "UPDATE admin SET nama = '$nama', password = '$passwordBaru' WHERE id_admin = $id_admin");
+        echo "
+            <script>
+                alert('Berhasil Update Profile!');
+                window.location.href = 'logout.php';
+            </script>
+        ";
+    } else {
+        echo "
+            <script>
+                alert('Password Lama Salah!');
+                window.location.href = 'profile.php';
+            </script>
+        ";
+    }
 }

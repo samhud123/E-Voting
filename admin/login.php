@@ -13,6 +13,7 @@ if (isset($_POST['btnLogin'])) {
         $row = mysqli_fetch_assoc($result);
         if ($password == $row['password']) {
             $_SESSION['admin'] = $row['nama'];
+            $_SESSION['id_admin'] = $row['id_admin'];
             header("location: index.php");
         } else {
             echo '

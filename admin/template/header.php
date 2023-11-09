@@ -30,7 +30,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
     <!-- ckeditor -->
-    <script  type="text/javascript" src="../../assets/plugins/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="../../assets/plugins/ckeditor/ckeditor.js"></script>
 </head>
 
 <body class="fix-header fix-sidebar card-no-border">
@@ -55,18 +55,9 @@
                 <!-- Logo -->
                 <!-- ============================================================== -->
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">
-                        <!-- Logo icon --><b>
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-
-                            <!-- Light Logo icon -->
-                            <img src="../assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
-                        </b>
-                        <!--End Logo icon -->
-                        <!-- Logo text --><span>
-
-                            <!-- Light Logo text -->
-                            <img src="../assets/images/logo-light-text.png" class="light-logo" alt="homepage" /></span> </a>
+                    <a class="navbar-brand" href="index.php">
+                        <h2 class="text-white">VOTING</h2>
+                    </a>
                 </div>
                 <!-- ============================================================== -->
                 <!-- End Logo -->
